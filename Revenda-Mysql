@@ -1,0 +1,88 @@
+create database revenda;
+use revenda;
+create table  venda(
+Compra varchar(3),
+Moto varchar(255),
+Carro varchar(255),
+MicroOnibus varchar(255),
+primary key (Carro));
+
+create table locacao(
+Nomee varchar(255),
+Locacao varchar(3),
+Carro varchar(255),
+QuilometrosCarroInicial varchar(255),
+QuilometrosCarroFinal varchar(255),
+Reserva varchar(255),
+primary key (Reserva));
+
+create table cliente(
+Nomee varchar(255),
+Nome varchar(255),
+Cpf bigint(11),
+Locacao varchar(3),
+Compra varchar(3),
+Reserva date,
+primary key(Nome));
+
+create table pagamentoCompra(
+Nome varchar(255),
+Moto varchar(255),
+Locacao varchar(3),
+Carro varchar(255),
+MicroOnibus varchar(255),
+Compra varchar(3),
+Financiamento varchar(80),
+Avista varchar(3),
+Cartao varchar(50),
+primary key (Financiamento));
+
+create table pagamentoLocacao(
+Reserva date,
+Cartao  varchar(50),
+Avista varchar(3),
+QuilometrosCarroInicial bigint(10),
+QuilometrosCarroFinal   bigint(3),
+Nomee varchar(255),
+primary key (Nomee));
+
+create table financiamento(
+Financiamento varchar(80),
+Banco varchar(255),
+FormaDePagamento varchar (255),
+Nome varchar(255),
+primary key(Banco));
+
+create table banco(
+Banco varchar(255),
+Itau varchar(3),
+Santander varchar(3),
+Bradesco varchar(3),
+Sicredi varchar(3),
+Nubank varchar(3));
+
+
+
+ALTER TABLE pagamentoCompra ADD CONSTRAINT FK_pagamentoCompra_venda
+FOREIGN KEY (Carro) 
+REFERENCES venda(Carro);
+
+ALTER TABLE financiamento ADD CONSTRAINT FK_financiamento_pagamentoCompra
+FOREIGN KEY (Financiamento) 
+REFERENCES pagamentoCompra(Financiamento);
+
+ALTER TABLE banco ADD CONSTRAINT FK_banco_financiamento
+FOREIGN KEY (Banco) 
+REFERENCES Financiamento(Banco);
+
+ALTER TABLE locacao ADD CONSTRAINT FK_locacao_pagamentoLocacao
+FOREIGN KEY (Nomee) 
+REFERENCES pagamentoLocacao(Nomee);
+
+ALTER TABLE pagamentoCompra ADD CONSTRAINT FK_pagamentoCompra_cliente
+FOREIGN KEY (Nome) 
+REFERENCES cliente(Nome);
+
+ALTER TABLE cliente ADD CONSTRAINT FK_cliente_pagamentoLocacao
+FOREIGN KEY (Nomee) 
+REFERENCES pagamentoLocacao(Nomee);
